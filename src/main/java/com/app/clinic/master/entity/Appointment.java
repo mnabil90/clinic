@@ -3,10 +3,10 @@ package com.app.clinic.master.entity;
 import java.util.Date;
 
 import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,6 +22,7 @@ import lombok.Data;
 @Entity
 @Table(name = "appointments")
 @Data
+@Schema(description = "Appointments Info")
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,8 @@ public class Appointment {
 	private String patientName;
 	
 	@NotNull
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	
 	@Enumerated(EnumType.STRING)
     private CancelReason cancelReason;

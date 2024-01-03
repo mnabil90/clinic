@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.app.clinic.dto.CancelRequest;
 import com.app.clinic.master.entity.Appointment;
 import com.app.clinic.master.entity.CancelReason;
 import com.app.clinic.master.repository.AppointmentRepository;
@@ -30,17 +31,12 @@ public class AppointmentService {
 	}
 
 	@Transactional
-	public Appointment cancel(Long id, CancelReason reason) {
-		Optional<Appointment> appointmentOp = appointmentRepository.findById(id);
-		if (appointmentOp.isPresent()) {
-			Appointment appointment = appointmentOp.get();
-			appointment.setStatus("CANCELLED");
-			appointment.setCancelReason(reason);
-			appointmentRepository.save(appointment);
-			return appointment;
-		} else {
-			throw new IllegalStateException("Appointment is already cancelled.");
-		}
+	public Appointment cancel(Long id, CancelRequest cancelRequest) {
+		Appointment existingAppointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + id));
+        existingAppointment.setStatus(cancelRequest.getStatus());
+        existingAppointment.setCancelReason(cancelRequest.getCancelReason());
+        return appointmentRepository.save(existingAppointment);
 
 	}
 

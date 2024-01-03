@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.clinic.dto.CancelRequest;
 import com.app.clinic.master.entity.Appointment;
 import com.app.clinic.master.entity.CancelReason;
 import com.app.clinic.master.service.AppointmentService;
@@ -31,11 +34,11 @@ public class AppointmentController {
 		return appointmentService.save(appointment);
 	}
 	
-	@GetMapping("/cancel")
 	@Operation(summary = "Cancel Appointment")
-	public Appointment cancel(@RequestParam Long id , @RequestParam CancelReason reason) {
-		return appointmentService.cancel(id,reason);
-	}
+	@PutMapping("/{id}/cancel")
+    public Appointment cancel(@PathVariable Long id, @RequestBody CancelRequest cancelRequest) {
+        return appointmentService.cancel(id, cancelRequest);
+    }
 	
 	@GetMapping("/getTodayAppointments")
 	@Operation(summary = "List Today Appointments")
