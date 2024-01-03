@@ -1,0 +1,9 @@
+type Query {
+    getFileInfo(id: ID!): FileDB
+}
+
+type FileDB {
+	id : ID!
+	fileName : String!
+	fileSize : Float
+}
